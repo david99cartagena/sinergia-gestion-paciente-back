@@ -29,6 +29,7 @@ Asegúrate de tener instalado lo siguiente en tu entorno Windows:
 -   [Composer](https://getcomposer.org/) – Para gestionar dependencias PHP.
 -   [Git](https://git-scm.com/) – Para clonar el repositorio.
 -   [Visual Studio Code](https://code.visualstudio.com/) (opcional) – Editor de código recomendado.
+-   [Postman](https://www.postman.com/downloads/) – Para probar los endpoints de la API.
 
 ### ⚙️ Bases de Datos Compatibles
 
@@ -141,3 +142,11 @@ Se incluyen pruebas automatizadas para verificar el correcto funcionamiento de l
 4. **Eliminar un paciente**
     - Borra un paciente mediante `/api/pacientes/{id}`.
     - Verifica que la respuesta sea exitosa y que el paciente ya no exista en la base de datos.
+
+## 📷 Imagenes de la Aplicacion
+
+![](https://raw.githubusercontent.com/david99cartagena/sinergia-gestion-paciente-back/refs/heads/main/media/Screenshot_1.png)
+
+![](https://raw.githubusercontent.com/david99cartagena/sinergia-gestion-paciente-back/refs/heads/main/media/Screenshot_2.png)
+
+![](https://raw.githubusercontent.com/david99cartagena/sinergia-gestion-paciente-back/refs/heads/main/media/Screenshot_3.png)
