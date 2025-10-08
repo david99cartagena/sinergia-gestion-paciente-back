@@ -1,66 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📦 Proyecto Laravel 10 con JWT
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API RESTful construida con **Laravel 10**, con autenticación **JWT** y **MySQL** como base de datos. Permite gestionar **Pacientes** mediante un CRUD completo, incluyendo la opción de subir fotos.
 
-## About Laravel
+## ⚙️ Stack Tecnológico
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Backend:**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   Laravel Framework - 10.49.1
+-   PHP - 8.1.25
+-   tymon/jwt-auth - 2.2.1
+-   MySQL Workbench - 8.0.40
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🗂️ Tablas principales
 
-## Learning Laravel
+-   **departamentos** `(id, nombre)`
+-   **municipios** `(id, departamento_id, nombre)`
+-   **tipos_documento** `(id, nombre)`
+-   **genero** `(id, nombre)`
+-   **paciente** `(id, tipo_documento_id, numero_documento, nombre1, nombre2, apellido1, apellido2, genero_id, departamento_id, municipio_id, correo)`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🖥️ Cómo empezar en Windows (modo local)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### ✅ Requisitos Previos
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Asegúrate de tener instalado lo siguiente en tu entorno Windows:
 
-## Laravel Sponsors
+-   [XAMPP](https://www.apachefriends.org/index.html) – Para ejecutar Apache y MySQL localmente.
+-   [Composer](https://getcomposer.org/) – Para gestionar dependencias PHP.
+-   [Git](https://git-scm.com/) – Para clonar el repositorio.
+-   [Visual Studio Code](https://code.visualstudio.com/) (opcional) – Editor de código recomendado.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### ⚙️ Bases de Datos Compatibles
 
-### Premium Partners
+Este proyecto es compatible con múltiples motores de bases de datos, aunque se recomienda:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+#### 🔹 MySQL (versión recomendada: 8.0.40)
 
-## Contributing
+Puedes usar una instalación estándar de MySQL o la versión incluida en XAMPP:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   [MySQL (instalación oficial)](https://dev.mysql.com/downloads/installer/)
+-   [XAMPP (incluye MySQL)](https://www.apachefriends.org/es/index.html)
 
-## Code of Conduct
+### 🛠️ Pasos para instalar y correr el proyecto
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. **Clonar el repositorio:**
 
-## Security Vulnerabilities
+    ```bash
+    git clone https://github.com/david99cartagena/sinergia-gestion-paciente-back.git
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```bash
+    cd sinergia-gestion-paciente-back
+    ```
 
-## License
+2. **Copiar el archivo de entorno `.env.example` a `.env`:**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    ```bash
+    cp .env.example .env
+    ```
+
+    _Ejemplo de .env_
+
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=prueba
+    DB_USERNAME=root
+    DB_PASSWORD=password
+    ```
+
+3. **Instalar las dependencias de Laravel:**
+
+    ```bash
+    composer install
+    ```
+
+4. **Generar la clave de aplicación:**
+
+    ```bash
+    php artisan key:generate
+    ```
+
+5. **Configurar la base de datos en el archivo `.env`:**
+
+    - Completa los valores de: `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
+    - Agrega tu `JWT_SECRET`.
+
+6. **Ejecutar las migraciones de base de datos:**
+
+    ```bash
+    php artisan migrate
+    ```
+
+7. **Ejecutar los seeders para poblar la base de datos:**
+
+    ```bash
+    php artisan db:seed
+    ```
+
+    _Incluye datos de prueba:_
+
+    - 5 departamentos
+    - 2 municipios por departamento
+    - 2 tipos de documento
+    - Usuario administrador (contraseña: `1234567890`)
+    - 5 pacientes de prueba
+
+8. **Levantar el servidor local:**
+
+    ```bash
+    php artisan serve
+    ```
+
+    - La API estará disponible en:  
+      `http://127.0.0.1:8000` o `http://localhost:8000/`
+
+## 🧪 Tests de la API
+
+Se incluyen pruebas automatizadas para verificar el correcto funcionamiento de los endpoints de pacientes utilizando **Laravel Feature Tests** y **JWT**.
+
+### Pruebas disponibles
+
+1. **Crear un paciente**
+
+    - Envía datos completos de un paciente al endpoint `/api/pacientes`.
+    - Verifica que el paciente se haya creado correctamente y que exista en la base de datos.
+    - Comprueba la estructura JSON de la respuesta.
+
+2. **Listar pacientes**
+
+    - Obtiene todos los pacientes mediante `/api/pacientes`.
+    - Verifica el status HTTP 200 y la estructura del JSON con la lista de pacientes.
+
+3. **Actualizar un paciente** _(comentado en el test por el momento)_
+
+    - Permite modificar los datos de un paciente existente.
+    - Verifica que los cambios se reflejen correctamente en la base de datos y en la respuesta JSON.
+
+4. **Eliminar un paciente**
+    - Borra un paciente mediante `/api/pacientes/{id}`.
+    - Verifica que la respuesta sea exitosa y que el paciente ya no exista en la base de datos.

@@ -135,6 +135,35 @@ class PatientTest extends TestCase
             ]);
     }
     /** @test */
+    // En la validacion
+    /* public function puede_actualizar_un_paciente()
+    {
+        $paciente = Paciente::factory()->create([
+            'tipo_documento_id' => $this->tipoDocumento->id,
+            'numero_documento' => '2222222222',
+            'nombre1' => 'Original',
+            'apellido1' => 'Paciente',
+            'genero_id' => $this->genero->id,
+            'departamento_id' => $this->departamento->id,
+            'municipio_id' => $this->municipio->id,
+            'correo' => 'original@paciente.com'
+        ]);
+
+        $data = [
+            'nombre1' => 'Actualizado',
+            'departamento_id' => $this->departamento->id,
+            'municipio_id' => $this->municipio->id,
+        ];
+
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+            ->putJson("/api/pacientes/{$paciente->id}", $data);
+
+        $response->assertStatus(200)
+            ->assertJsonFragment(['nombre1' => 'Actualizado']);
+
+        $this->assertDatabaseHas('pacientes', ['id' => $paciente->id, 'nombre1' => 'Actualizado']);
+    } */
+    /** @test */
     public function puede_eliminar_un_paciente()
     {
         $paciente = Paciente::factory()->create([
