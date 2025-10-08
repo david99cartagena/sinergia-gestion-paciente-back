@@ -25,9 +25,12 @@ class PatientController extends Controller
                 $query->where(function ($r) use ($q) {
                     $r->where('nombre1', 'like', "%$q%")
                         ->orWhere('apellido1', 'like', "%$q%")
+                        ->orWhere('correo', 'like', "%$q%")
                         ->orWhere('numero_documento', 'like', "%$q%");
                 });
             }
+
+            $query->orderBy('updated_at', 'desc');
 
             $data = $query->paginate($perPage);
             return $this->successResponse($data, 'Pacientes obtenidos correctamente');
@@ -52,56 +55,69 @@ class PatientController extends Controller
 
     public function store(PacienteRequest $request)
     {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('pacientes', 'public');
-            $data['foto'] = $fotoPath;
+            // Procesar foto opcional
+            if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+                $file = $request->file('foto');
+                $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                $data['foto'] = $file->storeAs('pacientes', $filename, 'public');
+            } else {
+                $data['foto'] = ""; // Si no se envía, dejar vacío
+            }
+
+            $paciente = Paciente::create($data);
+            $paciente->load(['tipoDocumento', 'genero', 'departamento', 'municipio']);
+
+            return $this->successResponse($paciente, 'Paciente creado exitosamente', 201);
+        } catch (Exception $e) {
+            return $this->errorResponse($e);
         }
-
-        $paciente = Paciente::create($data);
-
-        return response()->json([
-            'message' => 'Paciente creado exitosamente',
-            'data' => $paciente
-        ], 201);
     }
 
     public function update(PacienteRequest $request, $id)
     {
+        try {
+            $paciente = Paciente::findOrFail($id);
+            $data = $request->validated();
 
-        $paciente = Paciente::findOrFail($id);
-        $data = $request->validated();
-
-        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-
-            // eliminar foto anterior si existe
-            if ($paciente->foto && \Storage::disk('public')->exists($paciente->foto)) {
-                \Storage::disk('public')->delete($paciente->foto);
+            if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+                // Eliminar foto anterior si existe
+                if ($paciente->foto && Storage::disk('public')->exists($paciente->foto)) {
+                    Storage::disk('public')->delete($paciente->foto);
+                }
+                $file = $request->file('foto');
+                $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                $data['foto'] = $file->storeAs('pacientes', $filename, 'public');
+            } elseif ($request->has('foto') && empty($request->file('foto'))) {
+                // Si se envía vacío, borrar foto anterior y dejar vacío
+                if ($paciente->foto && Storage::disk('public')->exists($paciente->foto)) {
+                    Storage::disk('public')->delete($paciente->foto);
+                }
+                $data['foto'] = "";
+            } else {
+                // No se envía el campo, no tocar foto
+                unset($data['foto']);
             }
 
-            // guardar foto
-            $file = $request->file('foto');
-            $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
-            $data['foto'] = $file->storeAs('pacientes', $filename, 'public');
+            $paciente->update($data);
+            $paciente->refresh()->load(['tipoDocumento', 'genero', 'departamento', 'municipio']);
+
+            return $this->successResponse($paciente, 'Paciente actualizado correctamente');
+        } catch (ModelNotFoundException $e) {
+            return $this->notFoundResponse('Paciente no encontrado');
+        } catch (Exception $e) {
+            return $this->errorResponse($e);
         }
-
-        $paciente->update($data);
-        $paciente->refresh();
-
-        return response()->json([
-            'message' => 'Paciente actualizado correctamente',
-            'data' => $paciente
-        ]);
     }
-
 
     public function destroy($id)
     {
         try {
             $pac = Paciente::findOrFail($id);
 
-            if ($pac->foto) {
+            if ($pac->foto && Storage::disk('public')->exists($pac->foto)) {
                 Storage::disk('public')->delete($pac->foto);
             }
 
